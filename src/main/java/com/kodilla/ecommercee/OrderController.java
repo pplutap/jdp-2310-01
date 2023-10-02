@@ -22,7 +22,7 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.GET, value = "orderId")
     public OrderDto getOrder(@PathVariable Long orderId) {
-        return new OrderDto(0001L, 0002L, 1010L, LocalDate.parse("2023-09-27"), new BigDecimal(1200));
+        return new OrderDto(1L, 0002L, 1010L, LocalDate.parse("2023-09-27"), new BigDecimal(1200));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "orderId")

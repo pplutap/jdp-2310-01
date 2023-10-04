@@ -17,6 +17,7 @@ public class Product {
     private String name;
     private String description;
     private Long price;
+    private Cart cart;
 
     @Id
     @GeneratedValue
@@ -41,4 +42,9 @@ public class Product {
         return price;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_LIST")
+    public Cart getCart() {
+        return cart;
+    }
 }

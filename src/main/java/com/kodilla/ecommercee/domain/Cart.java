@@ -28,7 +28,7 @@ public class Cart {
 
     @OneToMany(
             targetEntity = Product.class,
-            mappedBy = "listProduct",
+            mappedBy = "cart",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )

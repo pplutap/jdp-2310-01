@@ -17,6 +17,7 @@ public class Product {
     private String name;
     private String description;
     private Long price;
+    private Group group;
 
     @Id
     @GeneratedValue
@@ -39,6 +40,12 @@ public class Product {
     @Column(name = "PRICE")
     public Long getPrice() {
         return price;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID", nullable = false)
+    public Group getGroup() {
+        return group;
     }
 
 }

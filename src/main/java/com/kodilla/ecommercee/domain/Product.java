@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class Product {
     private String name;
     private String description;
     private Long price;
-    private Cart cart;
+    private List<Cart> carts;
 
     @Id
     @GeneratedValue
@@ -42,9 +43,8 @@ public class Product {
         return price;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_LIST")
-    public Cart getCart() {
-        return cart;
+    @ManyToMany(mappedBy = "listProduct")
+    public List<Cart> getCarts() {
+        return carts;
     }
 }

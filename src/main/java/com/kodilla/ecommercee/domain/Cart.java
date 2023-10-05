@@ -26,11 +26,11 @@ public class Cart {
         return id;
     }
 
-    @OneToMany(
-            targetEntity = Product.class,
-            mappedBy = "cart",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+    @ManyToMany
+    @JoinTable(
+            name = "CART_PRODUCT",
+            joinColumns = @JoinColumn(name = "CART_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID ")
     )
     public List<Product> getListProduct() {
         return listProduct;

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +16,23 @@ public class ProductTestSuite {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Test
+    public void testFindById() {
+        //Given
+        Product product = new Product("Product1Test", "Text", 99L);
+
+        //When
+        productRepository.save(product);
+        Long id = product.getId();
+
+        //Then
+        Product productTest = productRepository.findById(id).get();
+        assertEquals(99L, productTest.getPrice());
+
+        //CleanUp
+        productRepository.delete(product);
+    }
 
     @Test
     public void testFindAll() {
@@ -31,27 +47,13 @@ public class ProductTestSuite {
         productRepository.save(product3);
 
         //Then
-//        List<Product> productList = productRepository.findAll();
-//        assertEquals(3, productList.size());
+        List<Product> productList = productRepository.findAll();
+        assertEquals(3, productList.size());
 
         //CleanUp
-//        productRepository.deleteAll();
-    }
-
-    @Test
-    public void testFindById() {
-        //Given
-        Product product1 = new Product("Product1Test", "Text", 99L);
-
-        //When
-        productRepository.save(product1);
-
-        //Then
-        Product productTest1 = productRepository.findById(1L).get();
-        assertEquals("Product1Test", productTest1.getName());
-
-        //CleanUp
-        productRepository.deleteAll();
+        productRepository.delete(product1);
+        productRepository.delete(product2);
+        productRepository.delete(product3);
     }
 
     @Test
@@ -82,13 +84,14 @@ public class ProductTestSuite {
 
         //When
         productRepository.save(product1);
-        product1 = productRepository.findById(1L).get();
+        Long id = product1.getId();
+        product1 = productRepository.findById(id).get();
         product1.setName("Product1Test update");
         product1.setPrice(299L);
 
         //Then
         productRepository.save(product1);
-        Product productUpdate = productRepository.findById(1L).get();
+        Product productUpdate = productRepository.findById(id).get();
         assertEquals("Product1Test update", productUpdate.getName());
         assertEquals(299L, productUpdate.getPrice());
 
@@ -110,8 +113,8 @@ public class ProductTestSuite {
         productRepository.save(product3);
 
         //Then
-//        productRepository.deleteById(id2);
-        assertEquals(3, productRepository.findAll().size());
+        productRepository.delete(product1);
+        assertEquals(2, productRepository.findAll().size());
 
         //CleanUp
         productRepository.delete(product1);

@@ -19,7 +19,7 @@ public class Product {
     private Long price;
     private Group group;
 
-    public Product(String name,String description,Long price){
+    public Product(String name, String description, Long price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,7 +50,7 @@ public class Product {
     }
 
     @ManyToOne
-    @JoinColumn(name = "GROUP_ID", nullable = false)
+    @JoinColumn(name = "GROUP_ID")
     public Group getGroup() {
         return group;
     }

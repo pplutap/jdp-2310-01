@@ -33,6 +33,7 @@ public class Order {
     public Long getCartId() {
         return cartId;
     }
+
     @Column(name = "USER_ID")
     public Long getUserId() {
         return userId;

@@ -29,4 +29,10 @@ public class User {
     @Column(name = "USER_KEY")
     private Long userKey;
 
+    public User(String username, int status, Long userKey) {
+        this.username = username;
+        this.status = status;
+        this.userKey = userKey;
+    }
+
 }

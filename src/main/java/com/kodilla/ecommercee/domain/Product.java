@@ -19,6 +19,13 @@ public class Product {
     private Long price;
     private Group group;
 
+    public Product(String name,String description,Long price){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     @Id
     @GeneratedValue
     @NotNull

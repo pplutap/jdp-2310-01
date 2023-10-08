@@ -55,4 +55,12 @@ public class Product {
         return group;
     }
 
+    public Product(String name, String description, Long price, Group group) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.group = group;
+    }
+
+
 }

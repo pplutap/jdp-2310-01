@@ -29,6 +29,10 @@ public class User {
     @Column(name = "USER_KEY")
     private Long userKey;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID")
+    public Order order;
+
     public User(String username, int status, Long userKey) {
         this.username = username;
         this.status = status;

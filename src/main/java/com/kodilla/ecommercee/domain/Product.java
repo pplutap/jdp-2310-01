@@ -18,6 +18,7 @@ public class Product {
     private String description;
     private Long price;
     private Group group;
+    private Order order;
 
     public Product(String name, String description, Long price) {
         this.id = id;
@@ -53,6 +54,12 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     public Group getGroup() {
         return group;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID")
+    public Order getOrder() {
+        return order;
     }
 
     public Product(String name, String description, Long price, Group group) {

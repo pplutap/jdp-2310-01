@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,10 +17,12 @@ import java.time.LocalDate;
 @Table(name = "ORDERS")
 public class Order {
     private Long id;
-    private Long cartId;
-    private Long userId;
+    private String name;
     private LocalDate created;
     private BigDecimal cost;
+    private List<Product> productsList;
+    private User user;
+
 
     @Id
     @GeneratedValue
@@ -29,14 +32,9 @@ public class Order {
         return id;
     }
 
-    @Column(name = "CART_ID")
-    public Long getCartId() {
-        return cartId;
-    }
-
-    @Column(name = "USER_ID")
-    public Long getUserId() {
-        return userId;
+    @Column(name = "NAME")
+    public String getName() {
+        return name;
     }
 
     @Column(name = "CREATED")
@@ -47,5 +45,24 @@ public class Order {
     @Column(name = "COST")
     public BigDecimal getCost() {
         return cost;
+    }
+
+    @OneToMany(targetEntity = Product.class,
+            mappedBy = "order",
+            cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY)
+    public List<Product> getProductsList() {
+        return productsList;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_ID")
+    public User getUser() {
+        return user;
+    }
+
+    public Order(String name, LocalDate created){
+        this.name = name;
+        this.created = created;
     }
 }

@@ -19,6 +19,14 @@ public class Product {
     private String description;
     private Long price;
     private List<Cart> carts;
+    private Group group;
+
+    public Product(String name, String description, Long price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
 
     @Id
     @GeneratedValue
@@ -47,4 +55,18 @@ public class Product {
     public List<Cart> getCarts() {
         return carts;
     }
+  
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
+    public Group getGroup() {
+        return group;
+    }
+
+    public Product(String name, String description, Long price, Group group) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.group = group;
+    }
+
 }

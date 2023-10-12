@@ -17,7 +17,7 @@ import java.util.List;
 public class Cart {
     private Long id;
     private List<Product> listProduct;
-
+    private Order order;
     @Id
     @GeneratedValue
     @NotNull
@@ -34,5 +34,10 @@ public class Cart {
     )
     public List<Product> getListProduct() {
         return listProduct;
+    }
+
+    @OneToOne
+    public Order getOrder() {
+        return order;
     }
 }

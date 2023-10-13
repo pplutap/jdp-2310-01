@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @Table(name = "ORDERS")
 public class Order {
     private Long id;
-    private Long cartId;
-    private Long userId;
+    private Cart cartId;
+    private User userId;
     private LocalDate created;
     private BigDecimal cost;
 
@@ -29,13 +29,15 @@ public class Order {
         return id;
     }
 
-    @Column(name = "CART_ID")
-    public Long getCartId() {
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CART_ID")
+    public Cart getCartId() {
         return cartId;
     }
 
-    @Column(name = "USER_ID")
-    public Long getUserId() {
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    public User getUserId() {
         return userId;
     }
 

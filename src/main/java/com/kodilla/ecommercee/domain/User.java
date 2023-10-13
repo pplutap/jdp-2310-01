@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,4 +36,10 @@ public class User {
         this.userKey = userKey;
     }
 
+    @OneToMany(
+            targetEntity = Order.class,
+            mappedBy = "userId",
+            fetch = FetchType.LAZY
+    )
+    private List<Order> orderList;
 }

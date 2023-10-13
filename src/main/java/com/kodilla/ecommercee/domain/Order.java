@@ -64,7 +64,7 @@ public class Order {
     }
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID2")
     public User getUser() {
         return user;
     }

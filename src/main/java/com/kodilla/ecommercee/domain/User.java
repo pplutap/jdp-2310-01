@@ -37,9 +37,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
-
     public User(String username, int status, Long userKey) {
         this.username = username;
         this.status = status;

@@ -17,6 +17,8 @@ import java.util.List;
 @Table(name = "ORDERS")
 public class Order {
     private Long id;
+    private Cart cartId;
+    private User userId;
     private LocalDate created;
     private BigDecimal cost;
     private List<Product> productsList;
@@ -29,6 +31,18 @@ public class Order {
     @Column(name = "ID", unique = true)
     public Long getId() {
         return id;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CART_ID")
+    public Cart getCartId() {
+        return cartId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    public User getUserId() {
+        return userId;
     }
 
     @Column(name = "CREATED")

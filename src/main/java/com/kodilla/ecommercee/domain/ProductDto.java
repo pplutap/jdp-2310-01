@@ -3,6 +3,8 @@ package com.kodilla.ecommercee.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 public class ProductDto {
@@ -11,5 +13,7 @@ public class ProductDto {
     private String name;
     private String description;
     private Long price;
+    private List<Cart> carts;
+    private Group group;
 
 }

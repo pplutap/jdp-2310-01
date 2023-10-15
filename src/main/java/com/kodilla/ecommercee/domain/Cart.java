@@ -40,4 +40,8 @@ public class Cart {
     public Order getOrder() {
         return order;
     }
+
+    public Cart(List<Product> listProduct){
+        this.listProduct = listProduct;
+    }
 }

@@ -1,23 +1,26 @@
 package com.kodilla.ecommercee.domain;
 
 import com.kodilla.ecommercee.repository.CartRepository;
+import com.kodilla.ecommercee.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 class CartTestSuite {
 
-        @Autowired
-        private CartRepository cartRepository;
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Test
     public void findCartByIdTest() {
@@ -48,20 +51,26 @@ class CartTestSuite {
     @Test
     public void deleteCartByIdTest() {
         //Given
-        Cart cart1 = new Cart();
-        Cart cart2 = new Cart();
+        Product product1 = new Product("Product1Test", "Text", 99L);
+        Product product2 = new Product("Product2Test", "Text", 199L);
+        productRepository.save(product1);
+        productRepository.save(product2);
+        Long idProduct1 = product1.getId();
+        Long idProduct2 = product2.getId();
+        List<Product> productList = new ArrayList<>();
+        productList.add(productRepository.findById(idProduct1).get());
+        productList.add(productRepository.findById(idProduct2).get());
+        Cart cart1 = new Cart(productList);
 
         //When
         cartRepository.save(cart1);
-        cartRepository.save(cart2);
 
         //Then
         Long id1 = cart1.getId();
-        Long id2 = cart2.getId();
         cartRepository.deleteById(id1);
-        cartRepository.deleteById(id2);
         assertFalse(cartRepository.existsById(id1));
-        assertFalse(cartRepository.existsById(id2));
+        assertTrue(productRepository.existsById(idProduct1));
+        assertTrue(productRepository.existsById(idProduct2));
 
     }
 
@@ -82,7 +91,7 @@ class CartTestSuite {
         Long id2 = cart2.getId();
         Long id3 = cart3.getId();
         List<Cart> listCarts = cartRepository.findAll();
-        assertEquals(3,listCarts.size());
+        assertEquals(3, listCarts.size());
 
         //CleanUp
         cartRepository.deleteById(id1);

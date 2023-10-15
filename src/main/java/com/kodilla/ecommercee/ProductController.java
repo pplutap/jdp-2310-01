@@ -1,40 +1,53 @@
 package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.ProductDto;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
+import com.kodilla.ecommercee.mapper.ProductMapper;
+import com.kodilla.ecommercee.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/product")
+@RequiredArgsConstructor
 public class ProductController {
 
+    private final ProductService productService;
+    private final ProductMapper productMapper;
+
     @RequestMapping(method = RequestMethod.GET, value = "")
-    public List<ProductDto> getProducts() {
-        return new ArrayList<>();
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        List<Product> products = productService.getProducts();
+        return ResponseEntity.ok(productMapper.mapToProductDtoList(products));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "productId")
-    public ProductDto getProduct(@PathVariable Long productId) {
-        return new ProductDto(0005L, "Czapka", "Czapka z daszkiem", 100L);
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long productId) throws ProductNotFoundException {
+        return ResponseEntity.ok(productMapper.mapToProductDto(productService.getProductById(productId)));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "productId")
-    public void deleteProduct(@PathVariable Long productId) {
-
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "")
-    public ProductDto updateProduct(ProductDto productDto) {
-        return new ProductDto(0005L, "CzapkaX", "Czapka z daszkiem z nadrukiem X", 110L);
+    @RequestMapping(method = RequestMethod.PUT, value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long productId, @RequestBody ProductDto productDto) throws ProductNotFoundException {
+        Product product = productMapper.mapToProduct(productDto);
+        Product productUpdate = productService.updateProduct(product, productId);
+        return ResponseEntity.ok(productMapper.mapToProductDto(productUpdate));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "")
-    public void createProduct(ProductDto productDto) {
-
+    @RequestMapping(method = RequestMethod.POST, value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createProduct(@RequestBody ProductDto productDto) {
+        Product product = productMapper.mapToProduct(productDto);
+        productService.saveProduct(product);
+        return ResponseEntity.ok().build();
     }
 }

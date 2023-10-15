@@ -1,23 +1,23 @@
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Group;
-import com.kodilla.ecommercee.domain.Order;
+import com.kodilla.ecommercee.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository extends CrudRepository<Order, Long> {
-    @Override
-    List<Order> findAll();
+public interface UserRepository extends CrudRepository<User, Long> {
 
     @Override
-    Order save(Order order);
+    List<User> findAll();
 
     @Override
-    Optional<Order> findById(Long id);
+    Optional<User> findById(Long id);
+
+    @Override
+    User save(User user);
 
     @Override
     void deleteById(Long id);
-  
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +17,7 @@ public class Product {
     private String name;
     private String description;
     private Long price;
-    private List<Cart> carts;
+    private Cart cart;
     private Group group;
 
     public Product(String name, String description, Long price) {
@@ -26,6 +25,14 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
+    }
+
+    public Product(Long id, String name, String description, Long price, Group group) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.group = group;
     }
 
     @Id
@@ -51,9 +58,10 @@ public class Product {
         return price;
     }
 
-    @ManyToMany(mappedBy = "listProduct")
-    public List<Cart> getCarts() {
-        return carts;
+    @ManyToOne
+    @JoinColumn(name = "CART_ID")
+    public Cart getCart() {
+        return cart;
     }
   
     @ManyToOne

@@ -1,5 +1,7 @@
 package com.kodilla.ecommercee;
 
+import com.kodilla.ecommercee.domain.GenericEntity;
+import com.kodilla.ecommercee.repository.GenericEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

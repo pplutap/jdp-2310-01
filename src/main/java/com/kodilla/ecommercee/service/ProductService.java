@@ -22,7 +22,7 @@ public class ProductService {
 
     public Product getProductById(final Long id) throws ProductNotFoundException {
         return productRepository.findById(id).orElseThrow(() ->
-        new ProductNotFoundException("Product non invenitur per id: " + id));
+                new ProductNotFoundException("Product non invenitur per id: " + id));
     }
 
     public void deleteProduct(final Long id) {

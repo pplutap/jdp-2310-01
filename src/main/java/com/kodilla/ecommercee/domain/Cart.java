@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +17,11 @@ public class Cart {
     private Long id;
     private List<Product> listProduct;
     private Order order;
+
+    public Cart(Long id, List<Product> listProduct) {
+        this.id = id;
+        this.listProduct = listProduct;
+    }
     @Id
     @GeneratedValue
     @NotNull
@@ -26,12 +30,7 @@ public class Cart {
         return id;
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "CART_PRODUCT",
-            joinColumns = @JoinColumn(name = "CART_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID ")
-    )
+    @OneToMany(mappedBy = "cart")
     public List<Product> getListProduct() {
         return listProduct;
     }
@@ -39,5 +38,12 @@ public class Cart {
     @OneToOne
     public Order getOrder() {
         return order;
+    }
+
+    public void addProductToCart(Product product) {
+        if(product != null) {
+            product.setCart(this);
+            listProduct.add(product);
+        }
     }
 }

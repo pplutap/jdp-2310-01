@@ -13,7 +13,6 @@ public class ProductDto {
     private String name;
     private String description;
     private Long price;
-    private List<Cart> carts;
     private Group group;
 
 }

@@ -40,6 +40,10 @@ public class Cart {
         return order;
     }
 
+    public Cart(List<Product> listProduct){
+        this.listProduct = listProduct;
+    }
+
     public void addProductToCart(Product product) {
         if(product != null) {
             product.setCart(this);
@@ -47,3 +51,4 @@ public class Cart {
         }
     }
 }
+

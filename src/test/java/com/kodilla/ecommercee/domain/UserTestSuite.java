@@ -1,13 +1,11 @@
 package com.kodilla.ecommercee.domain;
 
 import com.kodilla.ecommercee.repository.UserRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

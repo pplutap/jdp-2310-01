@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class OrderDto {
 
     private Long id;
-    private Long cartId;
-    private Long userId;
+    private Cart cartId;
+    private User userId;
     private LocalDate created;
     private BigDecimal cost;
 }

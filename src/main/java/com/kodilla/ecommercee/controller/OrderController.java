@@ -1,42 +1,52 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.OrderDto;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
+import com.kodilla.ecommercee.mapper.OrderMapper;
+import com.kodilla.ecommercee.service.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/order")
+@RequiredArgsConstructor
 public class OrderController {
+    private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "")
-    public List<OrderDto> getOrders() {
-        return new ArrayList<>();
+    public ResponseEntity<List<OrderDto>> getOrders() {
+        List<Order> orders = orderService.getOrders();
+        return ResponseEntity.ok(orderMapper.mapToOrderDtoList(orders));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "orderId")
-    public OrderDto getOrder(@PathVariable Long orderId) {
-        return new OrderDto(1L, 0002L, 1010L, LocalDate.parse("2023-09-27"), new BigDecimal(1200));
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) throws OrderNotFoundException {
+        return ResponseEntity.ok(orderMapper.mapToOrderDto(orderService.getOrderById(orderId)));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "orderId")
-    public void deleteOrder(@PathVariable Long orderId) {
-
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+        orderService.deleteOrder(orderId);
+        return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "")
-    public OrderDto updateOrder(OrderDto orderDto) {
-        return new OrderDto(0001L, 0002L, 1010L, LocalDate.parse("2023-09-27"), new BigDecimal(1200));
+    @RequestMapping(method = RequestMethod.PUT, value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long orderId, @PathVariable OrderDto orderDto) throws OrderNotFoundException {
+        Order order = orderMapper.mapToOrder(orderDto);
+        Order orderToUpdate = orderService.updateOrder(order, orderId);
+        return ResponseEntity.ok(orderMapper.mapToOrderDto(orderToUpdate));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "")
-    public void createOrder(OrderDto orderDto) {
-
+    @RequestMapping(method = RequestMethod.POST, value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
+        Order order = orderMapper.mapToOrder(orderDto);
+        orderService.saveOrder(order);
+        return ResponseEntity.ok().build();
     }
 }

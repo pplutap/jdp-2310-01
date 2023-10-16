@@ -50,4 +50,8 @@ public class Order {
     public BigDecimal getCost() {
         return cost;
     }
+
+    public Order(LocalDate created){
+        this.created = created;
+    }
 }

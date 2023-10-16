@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.Group;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,8 @@ public interface CartRepository extends CrudRepository<Cart, Long> {
 
     @Override
     Cart save(Cart cart);
+
+    @Override
+    List<Cart> findAll();
+
 }

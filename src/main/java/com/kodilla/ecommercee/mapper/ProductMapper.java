@@ -16,7 +16,6 @@ public class ProductMapper {
                 productDto.getName(),
                 productDto.getDescription(),
                 productDto.getPrice(),
-                productDto.getCarts(),
                 productDto.getGroup()
         );
     }
@@ -27,7 +26,6 @@ public class ProductMapper {
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
-                product.getCarts(),
                 product.getGroup()
         );
     }

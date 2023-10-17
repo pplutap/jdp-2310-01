@@ -33,7 +33,6 @@ public class CartService {
     public Cart updateCart(final Cart cart, final Long id) throws CartNotFoundException {
         Optional<Cart> cartEntity = cartRepository.findById(id);
         Cart cartToUpdate = cartEntity.orElseThrow(CartNotFoundException::new);
-
         cartToUpdate.setListProduct(cart.getListProduct());
         return cartRepository.save(cartToUpdate);
     }

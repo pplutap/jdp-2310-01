@@ -1,36 +1,48 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.domain.UserDto;
+import com.kodilla.ecommercee.exceptions.UserNotFoundException;
+import com.kodilla.ecommercee.mapper.UserMapper;
+import com.kodilla.ecommercee.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/user")
+@RequiredArgsConstructor
 public class UserController {
 
+    private final UserMapper userMapper;
+    private final UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getUsers")
-    public List<UserDto> getUsers() {
-        return new ArrayList<>();
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        User user = userMapper.mapToUser(userDto);
+        User createdUser = userService.saveUser(user);
+        UserDto createdUserDto = userMapper.mapToUserDto(createdUser);
+        return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getUser")
-    public UserDto getUser(@PathVariable Long userId) {
-        return new UserDto(0001L,"Adam",1,020322005L);
+    @PostMapping("/{userId}")
+    public ResponseEntity<Void> blockUser(@PathVariable Long userId) throws UserNotFoundException {
+        User userToBlock = userService.blockUser(userId);
+        User blockedUser = userService.saveUser(userToBlock);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "")
-    public void createUser(UserDto userDto) {
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "")
-    public UserDto updateUser(UserDto userDto) {
-        return new UserDto(0001L,"Adam",1,010100110L);
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "")
-    public void deleteUser(@PathVariable Long userId) {
+    @PostMapping("/{userId}/token")
+    public ResponseEntity<String> generateToken(@PathVariable Long userId, @RequestBody UserDto userDto) throws UserNotFoundException {
+        User user = userMapper.mapToUser(userDto);
+        if (userService.authenticateUser(userId, user)) {
+            String token = UUID.randomUUID().toString();
+            return new ResponseEntity<>(token, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Błąd uwierzytelniania", HttpStatus.UNAUTHORIZED);
+        }
     }
 }

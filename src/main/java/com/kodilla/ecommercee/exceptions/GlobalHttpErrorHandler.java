@@ -13,4 +13,9 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException exception) {
         return new ResponseEntity<>("Cart with given id doesn't exist", HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException exception) {
+        return new ResponseEntity<>("User with given id doesn't exist", HttpStatus.BAD_REQUEST);
+    }
 }

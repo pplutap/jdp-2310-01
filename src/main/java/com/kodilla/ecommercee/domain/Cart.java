@@ -22,6 +22,7 @@ public class Cart {
         this.id = id;
         this.listProduct = listProduct;
     }
+
     @Id
     @GeneratedValue
     @NotNull

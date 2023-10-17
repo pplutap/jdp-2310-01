@@ -8,12 +8,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "USERS")
 public class User {
+
+    public User(Long id, String username, int status, Long userKey) {
+        this.username = username;
+        this.status = status;
+        this.userKey = userKey;
+    }
 
     @Id
     @GeneratedValue
@@ -29,12 +35,6 @@ public class User {
 
     @Column(name = "USER_KEY")
     private Long userKey;
-
-    public User(String username, int status, Long userKey) {
-        this.username = username;
-        this.status = status;
-        this.userKey = userKey;
-    }
 
     @OneToMany(
             targetEntity = Order.class,

@@ -5,8 +5,10 @@ import com.kodilla.ecommercee.exceptions.CartNotFoundException;
 import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.service.CartService;
+import com.kodilla.ecommercee.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +26,8 @@ public class CartController {
     private final CartService cartService;
     private final CartMapper cartMapper;
     private final ProductMapper productMapper;
-    //private final OrderMapper orderMapper;
-    //private final OrderService orderService;
+    private final OrderMapper orderMapper;
+    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity<CartDto> createEmptyCart() {
@@ -63,14 +65,13 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-// potrzebna implementacja klas orderMapper, orderService
-//    @PostMapping("/{cartId}")
-//    public ResponseEntity<Order> crateOrderByCartId(@PathVariable Long cartId) throws CartNotFoundException {
-//        Cart cart = cartService.getCartById(cartId);
-//        Order order = new Order();
-//        order.setCartId(cart);
-//        Order createdOrder = orderService.createOrder(order);
-//        OrderDto orderDto = orderMapper.mapToOrderDto(createdOrder);
-//        return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
-//    }
+    @PostMapping("/{cartId}")
+    public ResponseEntity<OrderDto> crateOrderByCartId(@PathVariable Long cartId) throws CartNotFoundException {
+        Cart cart = cartService.getCartById(cartId);
+        Order order = new Order();
+        order.setCartId(cart);
+        Order createdOrder = orderService.saveOrder(order);
+        OrderDto orderDto = orderMapper.mapToOrderDto(createdOrder);
+        return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
+    }
 }
